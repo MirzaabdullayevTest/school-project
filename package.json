@@ -1,0 +1,19 @@
+{
+  "name": "school-project",
+  "version": "1.0.0",
+  "description": "https://future-coriander-537.notion.site/School-project-b9168946b2f04df0b708da198cfb2d31?pvs=4",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MirzaabdullayevTest/school-project.git"
+  },
+  "author": "Mirzaabdullayev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MirzaabdullayevTest/school-project/issues"
+  },
+  "homepage": "https://github.com/MirzaabdullayevTest/school-project#readme"
+}
