@@ -5,9 +5,10 @@ const host = 'localhost'
 
 require('./helper/db')()
 
-app.get('/', (req,res)=>{
-    res.send('Hello World')
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/admin', require('./routes/admin'))
 
 app.listen(port, host, ()=>{
     console.log(`App listening on http://${host}:${port}`)
