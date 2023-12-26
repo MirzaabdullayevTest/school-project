@@ -44,4 +44,40 @@ router.post('/login', async (req, res) => {
     res.send('The head admin has been successfully signed.')
 })
 
+router.post('/update', async (req, res) => {
+    const {password, name, email, oldPassword} = req.body
+
+    if(!email){
+        res.send('Email is required')
+        return
+    }
+
+    const admin = await Admin.findOne({ email })
+
+    if(!admin){
+        res.send('Admin not exist with this email')
+        return
+    }
+
+    if(password && oldPassword){
+        const areSame = await bcrypt.compare(oldPassword, admin.password)
+
+        if(!areSame){
+            res.send('Incorrect password.')
+            return
+        }
+
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+        admin.password = hashedPassword
+    }
+
+    if(name){
+        admin.name = name
+    }
+
+    await Admin.findByIdAndUpdate(admin.id, admin)
+    res.send('Successfully updated.')
+})
+
 module.exports = router
