@@ -24,4 +24,24 @@ router.post('/create', async (req, res,next)=>{
     res.send('Admin created')
 })
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body
+
+    const admin = await Admin.findOne({ email })
+
+    if(!admin){
+        res.send('Incorrect email.')
+        return
+    }
+
+    const areSame = await bcrypt.compare(password, admin.password)
+
+    if(!areSame){
+        res.send('Incorrect password.')
+        return
+    }
+
+    res.send('The head admin has been successfully signed.')
+})
+
 module.exports = router
