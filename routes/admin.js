@@ -53,6 +53,11 @@ router.post('/login', async (req, res) => {
 router.post('/update', auth, async (req, res) => {
     const {password, name, email, oldPassword} = req.body
 
+    if(!req.admin.isHeadAdmin){
+        res.send('You are not head admin')
+        return
+    }
+
     if(!email){
         res.send('Email is required')
         return
@@ -69,7 +74,7 @@ router.post('/update', auth, async (req, res) => {
         const areSame = await bcrypt.compare(oldPassword, admin.password)
 
         if(!areSame){
-            res.send('Incorrect password.')
+            res.send('Incorrect password')
             return
         }
 
@@ -83,7 +88,7 @@ router.post('/update', auth, async (req, res) => {
     }
 
     await Admin.findByIdAndUpdate(admin.id, admin)
-    res.send('Successfully updated.')
+    res.send('Successfully updated')
 })
 
 module.exports = router
