@@ -1,8 +1,11 @@
 const express = require('express')
 const Admin = require('../models/Admin')
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const saltRounds = 10;
+const secret_key = process.env.JWT_SECRET_KEY
+const expireMinute = 60
 
 router.post('/create', async (req, res,next)=>{
     const {name, email, password, isHeadAdmin} = req.body
@@ -41,7 +44,9 @@ router.post('/login', async (req, res) => {
         return
     }
 
-    res.send('The head admin has been successfully signed.')
+    const token = jwt.sign({email: admin.email, isHeadAdmin: admin.isHeadAdmin, _id: admin._id}, secret_key, {expiresIn: 60 * expireMinute})
+
+    res.header('x-auth-token', token).send('The head admin has been successfully signed.')
 })
 
 router.post('/update', async (req, res) => {
