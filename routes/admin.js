@@ -78,9 +78,7 @@ router.post('/update', auth, async (req, res) => {
             return
         }
 
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
-
-        admin.password = hashedPassword
+        admin.password = await bcrypt.hash(password, saltRounds)
     }
 
     if(name){
