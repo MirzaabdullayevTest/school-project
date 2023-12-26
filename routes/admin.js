@@ -1,5 +1,6 @@
 const express = require('express')
 const Admin = require('../models/Admin')
+const auth = require('../middleware/auth')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -49,7 +50,7 @@ router.post('/login', async (req, res) => {
     res.header('x-auth-token', token).send('The head admin has been successfully signed.')
 })
 
-router.post('/update', async (req, res) => {
+router.post('/update', auth, async (req, res) => {
     const {password, name, email, oldPassword} = req.body
 
     if(!email){
