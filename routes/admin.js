@@ -1,35 +1,24 @@
 const express = require('express')
 const Admin = require('../models/Admin')
 const router = express.Router()
+const bcrypt = require('bcryptjs')
+const saltRounds = 10;
 
 router.post('/create', async (req, res,next)=>{
     const {name, email, password, isHeadAdmin} = req.body
 
-    const candidate = await Admin.findOne({ email })
-
-    let admin = null
+    const candidate = await Admin.findOne()
 
     if(candidate){
-        res.send('This email is busy')
+        res.send('Head admin is already exist')
         return
     }
 
-    if(isHeadAdmin){
-        const checkHeadAdmin = await Admin.findOne({ isHeadAdmin: true })
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-        if(checkHeadAdmin){
-            res.send('Head admin was already created')
-            return
-        }
-
-        admin = new Admin({
-            name, password, email, isHeadAdmin
-        })
-    }else{
-        admin = new Admin({
-            name, password, email, isHeadAdmin
-        })
-    }
+    const admin = new Admin({
+        name, password: hashedPassword, email, isHeadAdmin
+    })
 
     await admin.save()
     res.send('Admin created')
