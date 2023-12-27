@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/admin', require('./routes/admin'))
 app.use('/api/user', require('./routes/user'))
+app.use('/api/school', require('./routes/school'))
 
 app.listen(port, host, ()=>{
     console.log(`App listening on http://${host}:${port}`)
