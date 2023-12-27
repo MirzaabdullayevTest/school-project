@@ -13,6 +13,13 @@ router.post('/create', auth, async (req, res) => {
         return
     }
 
+    const isExist = await Schedule.findOne({schoolId: school._id})
+
+    if(isExist){
+        res.send('In this school already has schedule times')
+        return
+    }
+
     const schedule = new Schedule({
         schoolId,
         startTime,
