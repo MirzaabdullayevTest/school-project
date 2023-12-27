@@ -5,7 +5,7 @@ function auth(req, res, next){
     const token = req.header('x-auth-token');
 
     if(!token){
-        req.status(401).send('Token error. Please add token.')
+        res.status(401).send('Token error. Please add token.')
         return
     }
 
