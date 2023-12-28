@@ -20,6 +20,10 @@ const tableSchema = new Schema({
     room: {
         type: String,
         required: true
+    },
+    dayId: {
+        type: String,
+        required: true
     }
 })
 
