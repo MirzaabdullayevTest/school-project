@@ -5,6 +5,8 @@ const host = 'localhost'
 
 require('./helper/db')()
 
+app.set('trust proxy', true);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
