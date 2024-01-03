@@ -3,6 +3,8 @@ const app = express()
 const port = 8080
 const host = 'localhost'
 
+require('dotenv').config()
+
 require('./helper/db')()
 
 app.set('trust proxy', true);
