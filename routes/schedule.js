@@ -3,8 +3,10 @@ const router = express.Router()
 const Schedule = require('../models/Schedule')
 const School = require('../models/School')
 const generateTable = require('../helper/generateTable')
+const validate = require('../middleware/validation')
+const {scheduleCreateSchema} = require("../middleware/validation-schemas/schedule");
 
-router.post('/create', async (req, res) => {
+router.post('/create', validate(scheduleCreateSchema), async (req, res) => {
     const {schoolId, startTime, duration, breakTime, bigBreakTime, bigBreakAfterLesson, endTime} = req.body
     const school = await School.findById(schoolId)
 
