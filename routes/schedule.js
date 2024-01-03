@@ -2,10 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Schedule = require('../models/Schedule')
 const School = require('../models/School')
-const auth = require('../middleware/auth')
 const generateTable = require('../helper/generateTable')
 
-router.post('/create', auth, async (req, res) => {
+router.post('/create', async (req, res) => {
     const {schoolId, startTime, duration, breakTime, bigBreakTime, bigBreakAfterLesson, endTime} = req.body
     const school = await School.findById(schoolId)
 
@@ -36,7 +35,7 @@ router.post('/create', auth, async (req, res) => {
     res.status(201).send('Successfully created')
 })
 
-router.get('/get/:schoolId', auth, async (req, res) => {
+router.get('/get/:schoolId', async (req, res) => {
     const schedule = await Schedule.findOne({schoolId: req.params.schoolId})
 
     if(!schedule){
@@ -48,7 +47,5 @@ router.get('/get/:schoolId', auth, async (req, res) => {
 
     res.send(table)
 })
-
-
 
 module.exports = router

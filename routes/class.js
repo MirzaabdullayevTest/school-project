@@ -2,9 +2,8 @@ const express = require('express')
 const router = express.Router()
 const School = require('../models/School')
 const Class = require('../models/Class')
-const auth = require('../middleware/auth')
 
-router.post('/create', auth, async (req, res) => {
+router.post('/create', async (req, res) => {
     const {name, schoolId, curator} = req.body
 
     if(parseInt(name) < 1 || parseInt(name) > 11){

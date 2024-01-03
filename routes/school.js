@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const School = require('../models/School')
-const auth = require('../middleware/auth')
 
-router.post('/create', auth, async (req, res) => {
+router.post('/create', async (req, res) => {
     const {name, userId} = req.body
 
     if(!req.admin.isHeadAdmin){

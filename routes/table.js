@@ -3,10 +3,9 @@ const router = express.Router()
 const Table = require('../models/Table')
 const Class = require('../models/Class')
 const Schedule = require('../models/Schedule')
-const auth = require('../middleware/auth')
 const generateTable = require('../helper/generateTable')
 
-router.post('/create', auth, async (req, res) => {
+router.post('/create', async (req, res) => {
     const {classId, lessonNumber, subject, teacher, room, dayId} = req.body
 
     const table = new Table({
@@ -18,7 +17,7 @@ router.post('/create', auth, async (req, res) => {
     res.status(201).send('Successfully created')
 })
 
-router.get('/get/:dayId/:classId', auth, async (req, res) => {
+router.get('/get/:dayId/:classId', async (req, res) => {
     const table = await Table.find({classId: req.params.classId, dayId: req.params.dayId}).sort({'lessonNumber': 1})
 
     if(!table){

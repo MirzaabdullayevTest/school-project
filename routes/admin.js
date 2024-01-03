@@ -7,8 +7,10 @@ const bcrypt = require('bcryptjs')
 const saltRounds = 10;
 const secret_key = process.env.JWT_SECRET_KEY
 const expireMinute = 60
+const validate = require('../middleware/validation')
+const { adminCreateSchema, adminLoginSchema, adminUpdateSchema} = require('../middleware/validation-schemas/admin')
 
-router.post('/create', async (req, res,next)=>{
+router.post('/create', validate(adminCreateSchema), async (req, res,next)=>{
     const {name, email, password, isHeadAdmin} = req.body
 
     const candidate = await Admin.findOne()
@@ -28,13 +30,13 @@ router.post('/create', async (req, res,next)=>{
     res.send('Admin created')
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', validate(adminLoginSchema), async (req, res) => {
     const { email, password } = req.body
 
     const admin = await Admin.findOne({ email })
 
     if(!admin){
-        res.send('Incorrect email.')
+        res.status(404).send('Incorrect email.')
         return
     }
 
@@ -50,16 +52,11 @@ router.post('/login', async (req, res) => {
     res.header('x-auth-token', token).send('The head admin has been successfully signed.')
 })
 
-router.post('/update', auth, async (req, res) => {
+router.post('/update', auth, validate(adminUpdateSchema), async (req, res) => {
     const {password, name, email, oldPassword} = req.body
 
     if(!req.admin.isHeadAdmin){
         res.send('You are not head admin')
-        return
-    }
-
-    if(!email){
-        res.send('Email is required')
         return
     }
 
@@ -86,7 +83,7 @@ router.post('/update', auth, async (req, res) => {
     }
 
     await Admin.findByIdAndUpdate(admin.id, admin)
-    res.send('Successfully updated')
+    res.status(201).send('Successfully updated')
 })
 
 module.exports = router
