@@ -86,4 +86,25 @@ router.post('/update', auth, validate(adminUpdateSchema), async (req, res) => {
     res.status(201).send('Successfully updated')
 })
 
+router.post('/delete', validate(adminLoginSchema), auth, async (req, res) => {
+    const {password, email} = req.body
+
+    const admin = await Admin.findOne({ email })
+
+    if(!admin){
+        res.send('Admin not found')
+        return
+    }
+
+    const areSame = await bcrypt.compare(password, admin.password)
+
+    if(!areSame){
+        res.send('Incorrect password')
+        return
+    }
+
+    await Admin.findByIdAndDelete(admin._id)
+    res.status(200).send('Successfully deleted')
+})
+
 module.exports = router

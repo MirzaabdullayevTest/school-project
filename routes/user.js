@@ -10,6 +10,7 @@ const expireMinute = 10
 const validate = require('../middleware/validation')
 const {userCreateSchema, adminLoginSchema, adminUpdateSchema} = require("../middleware/validation-schemas/admin");
 
+
 router.post('/create', validate(userCreateSchema), auth, async (req, res,next)=>{
     const {name, email, password} = req.body
 
