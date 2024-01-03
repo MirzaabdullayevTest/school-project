@@ -10,12 +10,10 @@ function auth(req, res, next){
     }
 
     try{
-        const decoded = jwt.verify(token, secret_key)
-        req.admin = decoded
+        req.admin = jwt.verify(token, secret_key)
         next()
     }catch (e){
-        res.status(401).send('Invalid token.')
-        return;
+        return res.status(401).send('Invalid token.')
     }
 }
 
