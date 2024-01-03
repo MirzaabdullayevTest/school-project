@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const School = require('../models/School')
+const validate = require('../middleware/validation')
+const {schoolCreateSchema} = require("../middleware/validation-schemas/school");
 
-router.post('/create', async (req, res) => {
+router.post('/create', validate(schoolCreateSchema), async (req, res) => {
     const {name, userId} = req.body
 
     if(!req.admin.isHeadAdmin){
