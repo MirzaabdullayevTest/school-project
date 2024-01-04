@@ -5,6 +5,18 @@ const schoolCreateSchema = Joi.object({
     userId: Joi.string().required(),
 })
 
+const schoolUpdateSchema = Joi.object({
+    name: Joi.string(),
+    userId: Joi.string().length(24),
+    schoolId: Joi.string().length(24).required(),
+})
+
+const schoolDeleteSchema = Joi.object({
+    schoolId: Joi.string().length(24).required(),
+})
+
 module.exports = {
     schoolCreateSchema,
+    schoolUpdateSchema,
+    schoolDeleteSchema
 }
