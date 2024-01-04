@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const schoolCreateSchema = Joi.object({
     name: Joi.string().required(),
-    userId: Joi.string().required(),
+    userId: Joi.string().length(24).required(),
 })
 
 const schoolUpdateSchema = Joi.object({
