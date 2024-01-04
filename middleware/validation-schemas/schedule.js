@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 const scheduleCreateSchema = Joi.object({
-    schoolId: Joi.string().required(),
+    schoolId: Joi.string().length(24).required(),
     startTime: Joi.string().required(),
     duration: Joi.string().required(),
     breakTime: Joi.string().required(),
@@ -10,6 +10,17 @@ const scheduleCreateSchema = Joi.object({
     endTime: Joi.string().required(),
 })
 
+const scheduleUpdateSchema = Joi.object({
+    schoolId: Joi.string().length(24).required(),
+    startTime: Joi.string(),
+    duration: Joi.string(),
+    breakTime: Joi.string(),
+    bigBreakTime: Joi.string(),
+    bigBreakAfterLesson: Joi.string(),
+    endTime: Joi.string(),
+})
+
 module.exports = {
     scheduleCreateSchema,
+    scheduleUpdateSchema
 }
