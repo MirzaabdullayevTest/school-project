@@ -72,11 +72,11 @@ router.post('/delete', validate(classDeleteSchema), async (req, res) => {
     }
 })
 
-router.get('/:classId', async (req, res) => {
+router.get('/get/:classId', async (req, res) => {
     const clas = await Class.findById(req.params.classId)
 
     if(!clas){
-        return res.send('Clas not found')
+        return res.send('Clas is not found')
     }
 
     res.status(200).send(clas)
