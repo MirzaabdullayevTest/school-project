@@ -47,7 +47,7 @@ router.post('/login', validate(adminLoginSchema), async (req, res) => {
         return
     }
 
-    const token = jwt.sign({email: admin.email, isHeadAdmin: admin.isHeadAdmin, _id: admin._id}, secret_key, {expiresIn: 60 * expireMinute})
+    const token = jwt.sign({email: admin.email, isHeadAdmin: admin.isHeadAdmin, _id: admin._id.toString()}, secret_key, {expiresIn: 60 * expireMinute})
 
     res.header('x-auth-token', token).send('The head admin has been successfully signed.')
 })

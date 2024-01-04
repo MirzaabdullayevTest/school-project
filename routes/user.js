@@ -53,7 +53,7 @@ router.post('/login', validate(adminLoginSchema), async (req, res) => {
         return
     }
 
-    const token = jwt.sign({email: user.email, _id: user._id}, secret_key, {expiresIn: 60 * expireMinute})
+    const token = jwt.sign({email: user.email, _id: user._id.toString()}, secret_key, {expiresIn: 60 * expireMinute})
 
     res.header('x-auth-token', token).send('The user has been successfully signed')
 })
