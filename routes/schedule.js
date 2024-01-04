@@ -4,7 +4,7 @@ const Schedule = require('../models/Schedule')
 const School = require('../models/School')
 const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
-const {scheduleCreateSchema, scheduleUpdateSchema} = require("../middleware/validation-schemas/schedule");
+const {scheduleCreateSchema, scheduleUpdateSchema, scheduleDeleteSchema} = require("../middleware/validation-schemas/schedule");
 
 router.post('/create', validate(scheduleCreateSchema), async (req, res) => {
     const {schoolId, startTime, duration, breakTime, bigBreakTime, bigBreakAfterLesson, endTime} = req.body
@@ -88,6 +88,15 @@ router.post('/update', validate(scheduleUpdateSchema), async (req, res) => {
     await Schedule.findByIdAndUpdate(schedule._id, schedule)
 
     res.status(201).send('Successfully updated')
+})
+
+router.post('/delete', validate(scheduleDeleteSchema), async (req, res) => {
+    try{
+        await Schedule.findByIdAndDelete(req.body.scheduleId);
+        return res.status(201).send('Successfully deleted')
+    }catch (e) {
+        return res.status(400).send(e)
+    }
 })
 
 router.get('/get/:schoolId', async (req, res) => {

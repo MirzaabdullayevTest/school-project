@@ -20,7 +20,12 @@ const scheduleUpdateSchema = Joi.object({
     endTime: Joi.string(),
 })
 
+const scheduleDeleteSchema = Joi.object({
+    scheduleId: Joi.string().length(24).required(),
+})
+
 module.exports = {
     scheduleCreateSchema,
-    scheduleUpdateSchema
+    scheduleUpdateSchema,
+    scheduleDeleteSchema
 }
