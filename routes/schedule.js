@@ -10,6 +10,10 @@ router.post('/create', validate(scheduleCreateSchema), async (req, res) => {
     const {schoolId, startTime, duration, breakTime, bigBreakTime, bigBreakAfterLesson, endTime} = req.body
     const school = await School.findById(schoolId)
 
+    if(!school){
+        return res.status(400).send('School is not found')
+    }
+
     if(!req.admin.isHeadAdmin && school.userId !== req.admin._id){
         res.send('You are not head admin or school user')
         return
