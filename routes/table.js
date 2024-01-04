@@ -5,7 +5,7 @@ const Class = require('../models/Class')
 const Schedule = require('../models/Schedule')
 const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
-const {tableCreateSchema} = require("../middleware/validation-schemas/table");
+const {tableCreateSchema, tableUpdateSchema} = require("../middleware/validation-schemas/table");
 
 router.post('/create', validate(tableCreateSchema), async (req, res) => {
     const {classId, lessonNumber, subject, teacher, room, dayId} = req.body
@@ -22,6 +22,44 @@ router.post('/create', validate(tableCreateSchema), async (req, res) => {
     await table.save()
 
     res.status(201).send('Successfully created')
+})
+
+router.post('/update', validate(tableUpdateSchema), async (req, res) => {
+    const {tableId, classId, lessonNumber, subject, teacher, room, dayId} = req.body
+
+    const table = await Table.findById(tableId)
+
+    if(!table){
+        return res.status(400).send('Table is not exist')
+    }
+
+    if(classId){
+        table.classId = classId
+    }
+
+    if(lessonNumber){
+        table.lessonNumber = lessonNumber
+    }
+
+    if(subject){
+        table.subject = subject
+    }
+
+    if(teacher){
+        table.teacher = teacher
+    }
+
+    if(room){
+        table.room = room
+    }
+
+    if(dayId){
+        table.dayId = dayId
+    }
+
+    await Table.findByIdAndUpdate(table._id, table)
+
+    res.status(201).send('Successfully updated')
 })
 
 router.get('/get/:dayId/:classId', async (req, res) => {
