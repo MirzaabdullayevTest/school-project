@@ -23,8 +23,14 @@ const tableDeleteSchema = Joi.object({
     tableId: Joi.string().length(24).required(),
 })
 
+const tableGetSchema = Joi.object({
+    dayId: Joi.string().length(24).required(),
+    classId: Joi.string().length(24).required(),
+})
+
 module.exports = {
     tableCreateSchema,
     tableUpdateSchema,
-    tableDeleteSchema
+    tableDeleteSchema,
+    tableGetSchema
 }

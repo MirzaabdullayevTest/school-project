@@ -5,7 +5,7 @@ const Class = require('../models/Class')
 const Schedule = require('../models/Schedule')
 const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
-const {tableCreateSchema, tableUpdateSchema, tableDeleteSchema} = require("../middleware/validation-schemas/table");
+const {tableCreateSchema, tableUpdateSchema, tableDeleteSchema, tableGetSchema} = require("../middleware/validation-schemas/table");
 
 router.post('/create', validate(tableCreateSchema), async (req, res) => {
     const {classId, lessonNumber, subject, teacher, room, dayId} = req.body
@@ -71,16 +71,27 @@ router.post('/delete', validate(tableDeleteSchema), async (req, res) => {
     }
 })
 
-router.get('/get/:dayId/:classId', async (req, res) => {
-    const table = await Table.find({classId: req.params.classId, dayId: req.params.dayId}).sort({'lessonNumber': 1})
+router.post('/get', validate(tableGetSchema), async (req, res) => {
+    const clas = await Class.findById(req.body.classId)
 
-    if(!table){
-        res.send('Table not found in this class')
+    if(!clas){
+        res.send('Clas is not found')
         return
     }
 
-    const clas = await Class.findById(req.params.classId)
     const schedule = await Schedule.findOne({schoolId: clas.schoolId})
+
+    if(!schedule){
+        res.send('Schedule is not found')
+        return
+    }
+
+    const table = await Table.find({classId: req.body.classId, dayId: req.body.dayId}).sort({'lessonNumber': 1})
+
+    if(!table){
+        res.send('Table is not found in this class')
+        return
+    }
 
     const scheduleTimes = generateTable(schedule)
 
