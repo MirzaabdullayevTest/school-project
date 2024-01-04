@@ -5,7 +5,7 @@ const Class = require('../models/Class')
 const Schedule = require('../models/Schedule')
 const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
-const {tableCreateSchema, tableUpdateSchema} = require("../middleware/validation-schemas/table");
+const {tableCreateSchema, tableUpdateSchema, tableDeleteSchema} = require("../middleware/validation-schemas/table");
 
 router.post('/create', validate(tableCreateSchema), async (req, res) => {
     const {classId, lessonNumber, subject, teacher, room, dayId} = req.body
@@ -60,6 +60,15 @@ router.post('/update', validate(tableUpdateSchema), async (req, res) => {
     await Table.findByIdAndUpdate(table._id, table)
 
     res.status(201).send('Successfully updated')
+})
+
+router.post('/delete', validate(tableDeleteSchema), async (req, res) => {
+    try{
+        await Table.findByIdAndDelete(req.body.tableId);
+        return res.status(200).send('Successfully deleted')
+    }catch (e) {
+        return res.status(400).send(e)
+    }
 })
 
 router.get('/get/:dayId/:classId', async (req, res) => {
