@@ -24,5 +24,5 @@ app.use('/api/class', require('./routes/class'))
 app.use('/api/table', require('./routes/table'))
 
 app.listen(port, host, ()=>{
-    console.log(`App listening on http://${host}:${port}`)
+    console.log(`App listening on http://${host}:${port} || ${new Date()}`)
 })
