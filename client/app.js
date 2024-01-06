@@ -59,6 +59,25 @@ app.get('/schedule/', auth, async (req, res) => {
    }
 })
 
+app.get('/classes/', auth, async (req, res) => {
+   try{
+       const headers = {
+           'x-auth-token': req.user.token
+       }
+
+       const response = await axios.get(`${server_api}/class/list/${req.user.schoolId}`, { headers })
+
+       if(!response.data){
+           return res.status(400).send('Something is wrong')
+       }
+
+       res.status(200).json(response.data)
+   }catch (error){
+       console.error(error);
+       res.status(500).json({ error: 'Internal Server Error' });
+   }
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
