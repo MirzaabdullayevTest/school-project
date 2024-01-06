@@ -7,7 +7,7 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-
+app.use(require('./middleware/logger'))
 app.use('/auth', require('./routes/auth'));
 
 app.use(require('./middleware/auth'))
