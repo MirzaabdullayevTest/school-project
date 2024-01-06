@@ -25,9 +25,26 @@ const userCreateSchema = Joi.object({
     password: Joi.string().min(6).required()
 })
 
+const clientUserCreateSchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    schoolId: Joi.string().length(24).required(),
+    password: Joi.string().min(6).required()
+})
+
+const clientUserUpdateSchema = Joi.object({
+    password: Joi.string().min(6),
+    name: Joi.string(),
+    email: Joi.string().email().required(),
+    schoolId: Joi.string().length(24),
+    oldPassword: Joi.string().min(6)
+})
+
 module.exports = {
     adminCreateSchema,
     adminLoginSchema,
     adminUpdateSchema,
-    userCreateSchema
+    userCreateSchema,
+    clientUserCreateSchema,
+    clientUserUpdateSchema
 }
