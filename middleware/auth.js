@@ -5,7 +5,7 @@ function auth(req, res, next){
     const token = req.header('x-auth-token');
 
     if(!token){
-        res.status(401).send('Token error. Please add token.')
+        res.status(401).send('Token error. Please add token')
         return
     }
 
@@ -13,7 +13,7 @@ function auth(req, res, next){
         req.admin = jwt.verify(token, secret_key)
         next()
     }catch (e){
-        return res.status(401).send('Invalid token.')
+        return res.status(401).send('Invalid token or secret key')
     }
 }
 
