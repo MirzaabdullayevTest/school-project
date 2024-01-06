@@ -15,6 +15,10 @@ app.use(express.json());
 
 app.post('/login', async (req, res) => {
     try {
+        if(!req.body.email || !req.body.password){
+            return res.status(400).send('Email or password is empty')
+        }
+
         const clientData = req.body;
 
         const response = await axios.post(`${server_api}/client-user/login`, clientData);
@@ -77,6 +81,49 @@ app.get('/classes/', auth, async (req, res) => {
        res.status(500).json({ error: 'Internal Server Error' });
    }
 })
+
+app.get('/weekdays/', auth, async (req, res) => {
+   try{
+       const headers = {
+           'x-auth-token': req.user.token
+       }
+
+       const response = await axios.get(`${server_api}/weekdays/get/`, { headers })
+
+       if(!response.data){
+           return res.status(400).send('Something is wrong')
+       }
+
+       res.status(200).json(response.data)
+   }catch (error){
+       console.error(error);
+       res.status(500).json({ error: 'Internal Server Error' });
+   }
+})
+
+app.get('/table/:classId/:dayId', auth, async (req, res) => {
+   try{
+       const headers = {
+           'x-auth-token': req.user.token
+       }
+
+       if(req.params.dayId.length !== 24 || req.params.classId.length !== 24){
+           return res.status(400).send('ClassId or dayId is incorrect')
+       }
+
+       const response = await axios.post(`${server_api}/table/get/`, { dayId: req.params.dayId, classId: req.params.classId }, { headers })
+
+       if(!response.data){
+           return res.status(400).send('Something is wrong')
+       }
+
+       res.status(200).json(response.data)
+   }catch (error){
+       console.error(error);
+       res.status(500).json({ error: 'Internal Server Error' });
+   }
+})
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
