@@ -63,13 +63,13 @@ router.post('/update', validate(adminUpdateSchema), auth, async (req, res) => {
 
     const user = await User.findOne({ email })
 
-    if(!req.admin.isHeadAdmin && user._id.toString() !== req.admin._id){
-        res.send('You are not head admin or correct user')
+    if(!user){
+        res.send('User not exist with this email')
         return
     }
 
-    if(!user){
-        res.send('User not exist with this email')
+    if(!req.admin.isHeadAdmin && user._id.toString() !== req.admin._id){
+        res.send('You are not head admin or correct user')
         return
     }
 
