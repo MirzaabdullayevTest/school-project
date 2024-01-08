@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
+const host = 'localhost'
 const auth = require('./middleware/auth')
 
 
@@ -25,6 +26,6 @@ app.use(function (req, res, next) {
    return res.send(404)
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(port, host, () => {
+    console.log(`App listening on http://${host}:${port} || ${new Date()}`);
 });
