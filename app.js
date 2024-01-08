@@ -2,8 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const auth = require("./middleware/auth");
 const app = express()
-const port = 8080
-const host = 'localhost'
+const port = process.env.PORT
+const host = process.env.HOST
 
 
 app.set('trust proxy', true);

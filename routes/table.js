@@ -7,6 +7,7 @@ const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
 const {tableCreateSchema, tableUpdateSchema, tableDeleteSchema, tableGetSchema} = require("../middleware/validation-schemas/table");
 
+
 router.post('/create', validate(tableCreateSchema), async (req, res) => {
     const {classId, lessonNumber, subject, teacher, room, dayId} = req.body
     const clas = await Class.findById(classId)

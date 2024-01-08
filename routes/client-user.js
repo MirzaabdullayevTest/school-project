@@ -5,9 +5,9 @@ const School = require('../models/School')
 const auth = require('../middleware/auth')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const saltRounds = 10;
+const saltRounds = process.env.SALT_ROUNDS;
 const secret_key = process.env.JWT_SECRET_KEY
-const expireMinute = 60
+const expireMinutes = process.env.CLIENT_USER_EXPIRE_MINUTES
 const validate = require('../middleware/validation')
 const {adminLoginSchema, clientUserCreateSchema, clientUserUpdateSchema} = require("../middleware/validation-schemas/admin");
 
@@ -60,7 +60,7 @@ router.post('/login', validate(adminLoginSchema), async (req, res) => {
         return
     }
 
-    const token = jwt.sign({schoolId: clientUser.schoolId, _id: clientUser._id.toString()}, secret_key, {expiresIn: 60 * expireMinute})
+    const token = jwt.sign({schoolId: clientUser.schoolId, _id: clientUser._id.toString()}, secret_key, {expiresIn: 60 * expireMinutes})
 
     res.header('x-auth-token', token).send('The client-user has been successfully logged in')
 })

@@ -6,6 +6,7 @@ const generateTable = require('../helper/generateTable')
 const validate = require('../middleware/validation')
 const {scheduleCreateSchema, scheduleUpdateSchema, scheduleDeleteSchema} = require("../middleware/validation-schemas/schedule");
 
+
 router.post('/create', validate(scheduleCreateSchema), async (req, res) => {
     const {schoolId, startTime, duration, breakTime, bigBreakTime, bigBreakAfterLesson, endTime} = req.body
     const school = await School.findById(schoolId)

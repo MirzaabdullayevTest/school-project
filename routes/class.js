@@ -5,6 +5,7 @@ const Class = require('../models/Class')
 const validate = require('../middleware/validation')
 const {classCreateSchema, classUpdateSchema, classDeleteSchema} = require("../middleware/validation-schemas/class");
 
+
 router.post('/create', validate(classCreateSchema), async (req, res) => {
     const {name, schoolId, curator} = req.body
     const school = await School.findById(schoolId)
