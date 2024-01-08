@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const router = require('express').Router()
 const secret_key =  process.env.SECRET_KEY
 const server_secret_key =  process.env.SERVER_SECRET_KEY
-const expireHours = 24
+const expireMinutes = process.env.USER_EXPIRE_MINUTES
 const server_api = process.env.SERVER_API
 
 
@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
             return res.send('Invalid token or secret key')
         }
 
-        token = jwt.sign({_id: req.user._id, schoolId: req.user.schoolId, token}, secret_key, {expiresIn: 60 * 60 * expireHours})
+        token = jwt.sign({_id: req.user._id, schoolId: req.user.schoolId, token}, secret_key, {expiresIn: 60 * expireMinutes})
 
         res.header('x-auth-token', token).send(response.data);
     } catch (error) {
@@ -37,6 +37,5 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-
 
 module.exports = router
