@@ -31,7 +31,10 @@ router.post('/login', async (req, res) => {
 
         token = jwt.sign({_id: req.user._id, schoolId: req.user.schoolId, token}, secret_key, {expiresIn: 60 * expireMinutes})
 
-        res.header('x-auth-token', token).send(response.data);
+        res.header('x-auth-token', token).send({
+            msg: response.data,
+            token: token
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
